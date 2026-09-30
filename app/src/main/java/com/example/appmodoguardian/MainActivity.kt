@@ -12,7 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.appmodoguardian.ui.HomeScreen
+import com.example.appmodoguardian.ui.screens.HomeScreen2
 import com.example.appmodoguardian.ui.theme.AppModoGuardianTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,9 +21,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppModoGuardianTheme {
-                HomeScreen()
+                HomeScreen2()
             }
         }
     }
 }
 //Guía 8 - Se elimina @composable hacia abajo ya que las funciones Greeting y GreetingPreview. Ya no se usan.
+//Guia 9 - Se borra linea  import com.example.appmodoguardian.ui.HomeScreen y
+//se en setContent se cambia de HomeScreen() a HomeScreen2()
