@@ -1,4 +1,5 @@
 package com.example.appmodoguardian.ui
+// Pantalla principal de la aplicación
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

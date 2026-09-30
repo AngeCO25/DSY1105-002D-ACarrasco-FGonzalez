@@ -1,4 +1,5 @@
 package com.example.appmodoguardian
+// Punto de entrada de la aplicación
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -25,4 +26,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-//Se elimina @composable hacia abajo ya que las funciones Greeting y GreetingPreview. Ya no se usan.
+//Guía 8 - Se elimina @composable hacia abajo ya que las funciones Greeting y GreetingPreview. Ya no se usan.
