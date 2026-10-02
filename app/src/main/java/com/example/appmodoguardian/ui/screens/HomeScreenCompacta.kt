@@ -51,7 +51,7 @@ fun HomeScreenCompacta() {
             }
 
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Logo de la aplicacion",
                 modifier = Modifier
                     .fillMaxWidth()
