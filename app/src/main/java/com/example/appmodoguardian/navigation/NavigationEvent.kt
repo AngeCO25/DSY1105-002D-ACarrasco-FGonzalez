@@ -18,3 +18,7 @@ sealed class NavigationEvent {
     // Subir un nivel en la jerarquia de la aplicación
     data object NavigateUp : NavigationEvent()
 }
+
+// Este archivo define los tipos de movimiento, no las pantallas.
+// Una pantalla no navega por si sola: genera un evento de este tipo
+// y MainActivity es quien lo ejecuta.

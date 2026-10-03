@@ -13,3 +13,7 @@ sealed class Screen(val route: String) {
     // Pantalla de configuración
     data object Configuracion : Screen(route = "configuracion")
 }
+
+// Este archivo solo define los nombres de las rutas.
+// Cada pantalla se identifica por su texto, por ejemplo "inicio" o "eventos".
+// MainActivity usa estos nombres para saber que pantalla mostrar.
