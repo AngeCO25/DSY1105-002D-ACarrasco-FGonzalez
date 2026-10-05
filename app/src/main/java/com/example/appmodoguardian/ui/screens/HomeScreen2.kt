@@ -7,16 +7,12 @@ import androidx.compose.runtime.Composable
 import com.example.appmodoguardian.ui.utils.obtenerWindowSizeClass
 
 @Composable
-fun HomeScreen2() {
-
-    // Consulta el tamaño de la pantalla donde se está ejecutando la app
+fun HomeScreen2(onCerrarSesion: () -> Unit = {}) {
     val windowSizeClass = obtenerWindowSizeClass()
-
-    // Muestra la versión que corresponde a ese ancho
     when (windowSizeClass.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> HomeScreenCompacta()
-        WindowWidthSizeClass.Medium -> HomeScreenMediana()
-        WindowWidthSizeClass.Expanded -> HomeScreenExpandida()
-        else -> HomeScreenCompacta()
+        WindowWidthSizeClass.Compact -> HomeScreenCompacta(onCerrarSesion)
+        WindowWidthSizeClass.Medium -> HomeScreenMediana(onCerrarSesion)
+        WindowWidthSizeClass.Expanded -> HomeScreenExpandida(onCerrarSesion)
+        else -> HomeScreenCompacta(onCerrarSesion)
     }
 }

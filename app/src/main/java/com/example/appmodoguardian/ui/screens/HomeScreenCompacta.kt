@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -24,11 +25,18 @@ import com.example.appmodoguardian.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenCompacta() {
-
+fun HomeScreenCompacta(onCerrarSesion: () -> Unit = {}) {
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Modo Guardian") })
+            TopAppBar(
+                title = { Text("Modo Guardián") },
+                actions = {
+                    // Vuelve a la pantalla de inicio de sesion
+                    TextButton(onClick = onCerrarSesion) {
+                        Text("Cerrar sesión")
+                    }
+                }
+            )
         }
     ) { innerPadding ->
 

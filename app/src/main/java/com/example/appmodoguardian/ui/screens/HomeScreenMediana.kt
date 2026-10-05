@@ -1,12 +1,11 @@
 package com.example.appmodoguardian.ui.screens
-// Version de la pantalla para tablets pequenas
 
-import androidx.compose.material3.Text
+// Version de la pantalla para tablet en tamano mediano
+// Mientras se construye su diseno propio, reutiliza el compacto
+
 import androidx.compose.runtime.Composable
 
 @Composable
-fun HomeScreenMediana() {
-    Text("Pantalla mediana pendiente")
+fun HomeScreenMediana(onCerrarSesion: () -> Unit = {}) {
+    HomeScreenCompacta(onCerrarSesion)
 }
-
-//PROVISORIO!
