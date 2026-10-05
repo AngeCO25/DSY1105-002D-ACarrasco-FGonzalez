@@ -4,6 +4,9 @@ package com.example.appmodoguardian.navigation
 
 sealed class Screen(val route: String) {
 
+    // Pantalla de inicio de sesión
+    data object Login : Screen(route = "login")
+
     // Pantalla de inicio
     data object Inicio : Screen(route = "inicio")
 
