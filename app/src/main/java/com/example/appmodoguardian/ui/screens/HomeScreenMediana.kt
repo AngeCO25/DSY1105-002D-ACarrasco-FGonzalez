@@ -1,4 +1,5 @@
 package com.example.appmodoguardian.ui.screens
+// Versión de la pantalla para tablets pequeñas
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,13 +26,21 @@ import com.example.appmodoguardian.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenMediana() {
+fun HomeScreenMediana(onCerrarSesion: () -> Unit = {}) {
 
     // Scaffold arma la estructura general de la pantalla
     Scaffold(
         topBar = {
             // Barra superior con el nombre de la app
-            TopAppBar(title = { Text("Modo Guardian - Tablet") })
+            TopAppBar(
+                title = { Text("Modo Guardián") },
+                actions = {
+                    // Vuelve a la pantalla de inicio de sesion
+                    TextButton(onClick = onCerrarSesion) {
+                        Text("Cerrar sesión")
+                    }
+                }
+            )
         }
     ) { innerPadding ->
 
@@ -39,19 +49,19 @@ fun HomeScreenMediana() {
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .padding(20.dp),
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
+                .padding(28.dp),
+            horizontalArrangement = Arrangement.spacedBy(28.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // Columna 1 (Izquierda): Imagen
+            // Columna izquierda: imagen
             Column(
                 modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    painter = painterResource(id = R.drawable.logo),
                     contentDescription = "Logo de la aplicacion",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -60,7 +70,7 @@ fun HomeScreenMediana() {
                 )
             }
 
-            // Columna 2 (Derecha): Texto y Botón
+            // Columna derecha: texto y boton
             Column(
                 modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -76,7 +86,7 @@ fun HomeScreenMediana() {
     }
 }
 
-// Vista previa para tablets pequeñas / pantalla mediana (widthDp > 600)
+// Vista previa para tablets pequenas, pantalla mediana
 @Preview(showBackground = true, widthDp = 700, heightDp = 500)
 @Composable
 fun HomeScreenMedianaPreview() {

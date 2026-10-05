@@ -1,8 +1,22 @@
 package com.example.appmodoguardian.ui.screens
+// Versión de la pantalla para tablets grandes
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,14 +28,23 @@ import com.example.appmodoguardian.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenExpandida() {
+fun HomeScreenExpandida(onCerrarSesion: () -> Unit = {}) {
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Modo Guardian - Tablet Grande") }
+                title = { Text("Modo Guardián") },
+                actions = {
+                    // Vuelve a la pantalla de inicio de sesion
+                    TextButton(onClick = onCerrarSesion) {
+                        Text("Cerrar sesión")
+                    }
+                }
             )
         }
     ) { innerPadding ->
+
+        // Row distribuye en horizontal para aprovechar el ancho de la pantalla
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -30,15 +53,16 @@ fun HomeScreenExpandida() {
             horizontalArrangement = Arrangement.spacedBy(32.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Zona 1 / Costado Izquierdo: Imagen Grande
+
+            // Columna izquierda: imagen grande
             Column(
                 modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                    contentDescription = "Logo App",
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = "Logo de la aplicacion",
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(260.dp),
@@ -46,33 +70,37 @@ fun HomeScreenExpandida() {
                 )
             }
 
-            // Zona 2 / Costado Derecho: Texto y Botón
+            // Columna derecha: texto y boton
             Column(
                 modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "¡Bienvenido!",
+                    text = "Bienvenido",
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.headlineMedium
                 )
+
                 Spacer(modifier = Modifier.height(16.dp))
+
                 Text(
-                    text = "Vista optimizada para pantalla expandida / tablet grande.",
+                    text = "Monitoreo de eventos y alertas",
                     style = MaterialTheme.typography.bodyLarge
                 )
+
                 Spacer(modifier = Modifier.height(24.dp))
-                Button(onClick = { /* acción futura */ }) {
-                    Text(text = "Presioname")
+
+                Button(onClick = { }) {
+                    Text("Ingresar")
                 }
             }
         }
     }
 }
 
-// Preview para pantalla Expandida (widthDp > 840)
-@Preview(name = "Expanded", widthDp = 900, heightDp = 600, showBackground = true)
+// Vista previa para pantalla expandida
+@Preview(name = "Expanded", showBackground = true, widthDp = 900, heightDp = 600)
 @Composable
 fun HomeScreenExpandidaPreview() {
     HomeScreenExpandida()
