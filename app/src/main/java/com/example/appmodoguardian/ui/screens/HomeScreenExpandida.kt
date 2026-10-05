@@ -1,13 +1,10 @@
 package com.example.appmodoguardian.ui.screens
+// Version de la pantalla para pantallas anchas
+// Mientras se construye su diseno propio, reutiliza el compacto
 
-// Version de la pantalla para tablets grandes
-
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun HomeScreenExpandida() {
-    Text("Pantalla expandida pendiente")
+fun HomeScreenExpandida(onCerrarSesion: () -> Unit = {}) {
+    HomeScreenCompacta(onCerrarSesion)
 }
-
-//PROVISORIO!

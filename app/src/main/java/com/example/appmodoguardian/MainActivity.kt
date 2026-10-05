@@ -16,6 +16,7 @@ import com.example.appmodoguardian.ui.screens.ConfiguracionScreen
 import com.example.appmodoguardian.ui.screens.EventosScreen
 import com.example.appmodoguardian.ui.screens.HomeScreen2
 import com.example.appmodoguardian.ui.theme.AppModoGuardianTheme
+import com.example.appmodoguardian.ui.screens.LoginScreen
 import com.example.appmodoguardian.viewmodel.MainViewModel
 
 class MainActivity : ComponentActivity() {
@@ -44,10 +45,14 @@ class MainActivity : ComponentActivity() {
                 // Contenedor que muestra la pantalla correspondiente a la ruta actual
                 NavHost(
                     navController = navController,
-                    startDestination = Screen.Inicio.route
+                    startDestination = Screen.Login.route
                 ) {
+                    composable(Screen.Login.route) {
+                        // Al presionar Ingresar se avisa al ViewModel que navegue al inicio
+                        LoginScreen(onIngresar = { viewModel.navigateTo(Screen.Inicio) })
+                    }
                     composable(Screen.Inicio.route) {
-                        HomeScreen2()
+                        HomeScreen2(onCerrarSesion = { viewModel.navigateBack() })
                     }
                     composable(Screen.Eventos.route) {
                         EventosScreen()
