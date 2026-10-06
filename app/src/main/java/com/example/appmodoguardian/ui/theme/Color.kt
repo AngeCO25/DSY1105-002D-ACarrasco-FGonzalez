@@ -1,5 +1,4 @@
 package com.example.appmodoguardian.ui.theme
-
 // Paleta de colores de Modo Guardian
 
 import androidx.compose.ui.graphics.Color
