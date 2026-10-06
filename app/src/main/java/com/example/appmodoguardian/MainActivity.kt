@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
                 // Contenedor que muestra la pantalla correspondiente a la ruta actual
                 NavHost(
                     navController = navController,
-                    startDestination = Screen.Login.route
+                    startDestination = Screen.Eventos.route
                 ) {
                     composable(Screen.Login.route) {
                         // Al presionar Ingresar se avisa al ViewModel que navegue al inicio
