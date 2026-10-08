@@ -10,10 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -35,6 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.appmodoguardian.R
+import com.example.appmodoguardian.model.Usuario
+import com.example.appmodoguardian.repository.UsuarioRepository
 import com.example.appmodoguardian.ui.theme.AppModoGuardianTheme
 import com.example.appmodoguardian.ui.theme.AzulPrincipal
 import com.example.appmodoguardian.ui.theme.FondoOscuro
@@ -43,12 +45,15 @@ import com.example.appmodoguardian.ui.theme.TextoClaro
 import com.example.appmodoguardian.ui.theme.TextoSecundario
 
 @Composable
-fun LoginScreen(onIngresar: () -> Unit = {}) {
+fun LoginScreen(onIngresar: (Usuario) -> Unit = {}) {
     // Guardan lo que el usuario escribe en cada campo
     var correo by remember { mutableStateOf("") }
     var clave by remember { mutableStateOf("") }
     // Mensaje que aparece cuando los datos no son correctos
     var error by remember { mutableStateOf("") }
+
+    // Fuente de los usuarios de prueba
+    val repositorio = remember { UsuarioRepository() }
 
     Column(
         modifier = Modifier
@@ -140,10 +145,11 @@ fun LoginScreen(onIngresar: () -> Unit = {}) {
 
         Button(
             onClick = {
-                // Usuario de prueba definido en el codigo
-                if (correo == "supervisor@empresa.cl" && clave == "12345678") {
+                // Busca el usuario en el repositorio
+                val encontrado = repositorio.validar(correo.trim(), clave)
+                if (encontrado != null) {
                     error = ""
-                    onIngresar()
+                    onIngresar(encontrado)
                 } else {
                     error = "Correo o contraseña incorrectos"
                 }

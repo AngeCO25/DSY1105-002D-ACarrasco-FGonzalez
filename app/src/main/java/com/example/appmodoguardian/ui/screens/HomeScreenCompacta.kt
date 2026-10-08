@@ -42,7 +42,11 @@ import com.example.appmodoguardian.ui.theme.TextoSecundario
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenCompacta(onCerrarSesion: () -> Unit = {}) {
+fun HomeScreenCompacta(
+    nombre: String = "",
+    rol: String = "",
+    onCerrarSesion: () -> Unit = {}
+) {
 
     Scaffold(
         topBar = {
@@ -66,8 +70,9 @@ fun HomeScreenCompacta(onCerrarSesion: () -> Unit = {}) {
                 .padding(20.dp)
         ) {
 
+            // Saludo con el nombre de quien inicio sesion
             Text(
-                text = "Hola, Ángela",
+                text = "Hola, $nombre",
                 fontSize = 22.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = TextoClaro
@@ -84,7 +89,7 @@ fun HomeScreenCompacta(onCerrarSesion: () -> Unit = {}) {
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = "Perfil Supervisor",
+                    text = "Perfil $rol",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = AzulClaro
@@ -248,6 +253,6 @@ private fun FilaEvento(
 @Composable
 fun HomeScreenCompactaPreview() {
     AppModoGuardianTheme {
-        HomeScreenCompacta()
+        HomeScreenCompacta(nombre = "Ángela Carrasco", rol = "Supervisor")
     }
 }

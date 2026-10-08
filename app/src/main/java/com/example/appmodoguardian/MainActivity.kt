@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,8 +17,8 @@ import com.example.appmodoguardian.navigation.Screen
 import com.example.appmodoguardian.ui.screens.ConfiguracionScreen
 import com.example.appmodoguardian.ui.screens.EventosScreen
 import com.example.appmodoguardian.ui.screens.HomeScreen2
-import com.example.appmodoguardian.ui.theme.AppModoGuardianTheme
 import com.example.appmodoguardian.ui.screens.LoginScreen
+import com.example.appmodoguardian.ui.theme.AppModoGuardianTheme
 import com.example.appmodoguardian.viewmodel.MainViewModel
 
 class MainActivity : ComponentActivity() {
@@ -30,6 +32,9 @@ class MainActivity : ComponentActivity() {
 
                 // Lleva el registro de en que pantalla esta la aplicacion
                 val navController = rememberNavController()
+
+                // Observa quien tiene la sesion iniciada
+                val usuario by viewModel.usuarioActual.collectAsState()
 
                 // Queda atento a los eventos que emite el ViewModel
                 LaunchedEffect(Unit) {
@@ -48,11 +53,17 @@ class MainActivity : ComponentActivity() {
                     startDestination = Screen.Login.route
                 ) {
                     composable(Screen.Login.route) {
-                        // Al presionar Ingresar se avisa al ViewModel que navegue al inicio
-                        LoginScreen(onIngresar = { viewModel.navigateTo(Screen.Inicio) })
+                        // El ViewModel guarda el usuario validado y navega al inicio
+                        LoginScreen(onIngresar = { usuarioValidado ->
+                            viewModel.iniciarSesion(usuarioValidado)
+                        })
                     }
                     composable(Screen.Inicio.route) {
-                        HomeScreen2(onCerrarSesion = { viewModel.navigateBack() })
+                        HomeScreen2(
+                            nombre = usuario?.nombre ?: "",
+                            rol = usuario?.rol ?: "",
+                            onCerrarSesion = { viewModel.cerrarSesion() }
+                        )
                     }
                     composable(Screen.Eventos.route) {
                         EventosScreen()
@@ -74,3 +85,5 @@ class MainActivity : ComponentActivity() {
 //Guia 9 - Se borra linea import com.example.appmodoguardian.ui.HomeScreen y
 //se en setContent se cambia de HomeScreen() a HomeScreen2()
 //Guia 10 - Se agrega el NavHost y se escuchan los eventos del MainViewModel
+//Se agregan los perfiles: el ViewModel guarda el usuario que inicio sesion
+//y la pantalla de inicio muestra su nombre y su rol
