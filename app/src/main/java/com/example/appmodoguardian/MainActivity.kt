@@ -30,10 +30,10 @@ class MainActivity : ComponentActivity() {
 
                 val viewModel: MainViewModel = viewModel()
 
-                // Lleva el registro de en que pantalla esta la aplicacion
+                // Lleva el registro de en qué pantalla está la aplicación
                 val navController = rememberNavController()
 
-                // Observa quien tiene la sesion iniciada
+                // Observa quién tiene la sesión iniciada
                 val usuario by viewModel.usuarioActual.collectAsState()
 
                 // Queda atento a los eventos que emite el ViewModel
@@ -69,7 +69,11 @@ class MainActivity : ComponentActivity() {
                         EventosScreen()
                     }
                     composable(Screen.Configuracion.route) {
-                        ConfiguracionScreen()
+                        ConfiguracionScreen(
+                            onNavegarInicio = { viewModel.navigateTo(Screen.Inicio) },
+                            onNavegarEventos = { viewModel.navigateTo(Screen.Eventos) },
+                            onCerrarSesion = { viewModel.cerrarSesion() }
+                        )
                     }
                 }
             }
