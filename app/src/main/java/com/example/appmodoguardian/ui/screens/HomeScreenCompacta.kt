@@ -1,4 +1,5 @@
 package com.example.appmodoguardian.ui.screens
+
 // Versión de la pantalla de inicio para teléfonos
 
 import androidx.compose.foundation.background
@@ -17,14 +18,27 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,136 +53,189 @@ import com.example.appmodoguardian.ui.theme.RojoError
 import com.example.appmodoguardian.ui.theme.SuperficieOscura
 import com.example.appmodoguardian.ui.theme.TextoClaro
 import com.example.appmodoguardian.ui.theme.TextoSecundario
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenCompacta(
     nombre: String = "",
     rol: String = "",
-    onCerrarSesion: () -> Unit = {}
+    onCerrarSesion: () -> Unit = {},
+    onIrAEventos: () -> Unit = {},
+    onIrAConfiguracion: () -> Unit = {}
 ) {
+    // Estado del menu lateral y herramienta para abrirlo y cerrarlo
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Modo Guardián") },
-                actions = {
-                    // Vuelve a la pantalla de inicio de sesion
-                    TextButton(onClick = onCerrarSesion) {
-                        Text("Cerrar sesión")
-                    }
-                }
-            )
-        }
-    ) { innerPadding ->
-
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(20.dp)
-        ) {
-
-            // Saludo con el nombre de quien inicio sesion
-            Text(
-                text = "Hola, $nombre",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.ExtraBold,
-                color = TextoClaro
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Etiqueta con el perfil del usuario
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .background(AzulClaro, CircleShape)
-                )
-                Spacer(modifier = Modifier.width(6.dp))
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet {
                 Text(
-                    text = "Perfil $rol",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AzulClaro
+                    text = "Menú principal",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+
+                NavigationDrawerItem(
+                    label = { Text("Inicio") },
+                    selected = true,
+                    icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
+                    onClick = { scope.launch { drawerState.close() } }
+                )
+
+                NavigationDrawerItem(
+                    label = { Text("Eventos") },
+                    selected = false,
+                    icon = { Icon(Icons.Default.Notifications, contentDescription = "Eventos") },
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        onIrAEventos()
+                    }
+                )
+
+                NavigationDrawerItem(
+                    label = { Text("Configuración") },
+                    selected = false,
+                    icon = { Icon(Icons.Default.Settings, contentDescription = "Configuración") },
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        onIrAConfiguracion()
+                    }
                 )
             }
-
-            Spacer(modifier = Modifier.height(22.dp))
-
-            // Indicador destacado de alertas sin atender
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = SuperficieOscura)
-            ) {
-                Column(modifier = Modifier.padding(18.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(
-                            modifier = Modifier
-                                .size(8.dp)
-                                .background(Amarillo, CircleShape)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Alertas pendientes",
-                            fontSize = 13.sp,
-                            color = TextoSecundario
-                        )
+        }
+    ) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Modo Guardián") },
+                    // Boton que abre el menu lateral
+                    navigationIcon = {
+                        IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                            Icon(Icons.Default.Menu, contentDescription = "Abrir menú")
+                        }
+                    },
+                    actions = {
+                        // Vuelve a la pantalla de inicio de sesion
+                        TextButton(onClick = onCerrarSesion) {
+                            Text("Cerrar sesión")
+                        }
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
+                )
+            }
+        ) { innerPadding ->
+
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(20.dp)
+            ) {
+
+                // Saludo con el nombre de quien inicio sesion
+                Text(
+                    text = "Hola, $nombre",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = TextoClaro
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Etiqueta con el perfil del usuario
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(8.dp)
+                            .background(AzulClaro, CircleShape)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = "4",
-                        fontSize = 34.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = Amarillo
+                        text = "Perfil $rol",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = AzulClaro
                     )
                 }
-            }
 
-            Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(22.dp))
 
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                TarjetaResumen(
-                    titulo = "Eventos hoy",
-                    valor = "12",
-                    modifier = Modifier.weight(1f)
+                // Indicador destacado de alertas sin atender
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = SuperficieOscura)
+                ) {
+                    Column(modifier = Modifier.padding(18.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(8.dp)
+                                    .background(Amarillo, CircleShape)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Alertas pendientes",
+                                fontSize = 13.sp,
+                                color = TextoSecundario
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "4",
+                            fontSize = 34.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = Amarillo
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    TarjetaResumen(
+                        titulo = "Eventos hoy",
+                        valor = "12",
+                        modifier = Modifier.weight(1f)
+                    )
+                    TarjetaResumen(
+                        titulo = "Dispositivos",
+                        valor = "8/9",
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(26.dp))
+
+                Text(
+                    text = "Eventos recientes",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextoClaro
                 )
-                TarjetaResumen(
-                    titulo = "Dispositivos",
-                    valor = "8/9",
-                    modifier = Modifier.weight(1f)
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                FilaEvento(
+                    titulo = "Movimiento no autorizado",
+                    detalle = "Cámara 03 · Bodega norte",
+                    hora = "14:32",
+                    colorPrioridad = RojoError
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                FilaEvento(
+                    titulo = "Dispositivo sin conexión",
+                    detalle = "Sensor 07 · Acceso sur",
+                    hora = "13:05",
+                    colorPrioridad = Amarillo
                 )
             }
-
-            Spacer(modifier = Modifier.height(26.dp))
-
-            Text(
-                text = "Eventos recientes",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                color = TextoClaro
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            FilaEvento(
-                titulo = "Movimiento no autorizado",
-                detalle = "Cámara 03 · Bodega norte",
-                hora = "14:32",
-                colorPrioridad = RojoError
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            FilaEvento(
-                titulo = "Dispositivo sin conexión",
-                detalle = "Sensor 07 · Acceso sur",
-                hora = "13:05",
-                colorPrioridad = Amarillo
-            )
         }
     }
 }
