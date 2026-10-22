@@ -5,9 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.appmodoguardian"
-    compileSdk {
-        version = release(37)
-    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.appmodoguardian"
@@ -21,9 +19,7 @@ android {
 
     buildTypes {
         release {
-            optimization {
-                enable = false
-            }
+            isMinifyEnabled = false
         }
     }
     compileOptions {
@@ -39,6 +35,10 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
+
+    // Librería de iconos extendidos para Material Design
+    implementation("androidx.compose.material:material-icons-extended")
+
     // Guia 9 - Libreria para detectar el tamano de pantalla del dispositivo
     implementation(libs.androidx.material3.windowsize)
     implementation(libs.androidx.compose.ui)
